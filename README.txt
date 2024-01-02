@@ -1,9 +1,9 @@
-Nombre de la Aplicación: MiñoSmash
+Nombre de la Aplicación: QuickMora
 
 Funcionalidad y Propósito:
 
 Descripción General:
-MiñoSmash es una aplicación diseñada para mejorar la experiencia de los clientes al pedir en una hamburguesería específica. La aplicación permitirá a los usuarios visualizar el menú, realizar pedidos y personalizar sus hamburguesas, así como proporcionar información útil sobre el restaurante. Todo ello mediante una interfaz de usuario moderna y atractiva desarrollada con Jetpack Compose.
+QuickMora es una aplicación diseñada para mejorar la experiencia de los clientes al pedir en una hamburguesería específica. La aplicación permitirá a los usuarios visualizar el menú, realizar pedidos y personalizar sus hamburguesas, así como proporcionar información útil sobre el restaurante. Todo ello mediante una interfaz de usuario moderna y atractiva desarrollada con Jetpack Compose.
 
 Características Principales:
 
