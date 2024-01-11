@@ -4,13 +4,28 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -21,10 +36,13 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.moraiiiss.appburguer.ui.theme.AppBurguerTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,52 +60,64 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 
-fun Disenho() { //funcion para el diseño de la página
+fun Disenho() {
+    AppBurguerTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {//añadimos titulo
+                        Text("App Burguer")
+                    },
+                    navigationIcon = {//añadimos iconos de navegacion
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = null)
+                    },
+                    actions = {//añadimos un evento onclick para interactuar
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                        }
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(imageVector = Icons.Default.Send, contentDescription = null)
+                        }
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                        }
+                    },
+                    modifier = Modifier.background(color = Color.Red)//modificamos el color de fondo a rojo(no se pq no me deja)
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "App Burguer",
-                        color = Color.Black
-                    )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Red,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+
                 )
-
-
-            )
-
-        }
-    ) {padding ->
-        Contenido(modifier = Modifier.padding(padding))
+            },
+            content = { paddingValues ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ){
+                    Text("Bienvenido a App Burguer", style = MaterialTheme.typography.bodyLarge)
+                    Spacer(modifier = Modifier.height(16.dp))//separamos con un espacio
+                    Image(//añadimos la imagen
+                        painter = painterResource(id = R.drawable.burguer),
+                        contentDescription = "Imagen de hamburguesa",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .background(Color.Black)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("Lista de especialidades:", textAlign = TextAlign.Center )
+                    ListaElementos()
+                }
+            }
+        )
     }
 }
-
-
-
-
 @Composable
-fun Contenido(modifier: Modifier = Modifier.padding(100.dp)) {
-    Column(
-        modifier = Modifier.run {
-            fillMaxSize()
-                .padding(16.dp)
-        }
-    ) {
-        Text(
-            text = "ssssssssssssssssssssssssssssssssssssss!",
-            modifier = Modifier.padding(8.dp)
-        )
+fun ListaElementos() {
+    val elementos = listOf("Hamburguesa California", "Hamburguesa Miami", "Hamburguesa San Francisco", "Hamburguesa The Goat")//añadimos los elementos
 
-        // Añadir texto adicional
-        Text(
-            text = "Texto adicional en el cuerpo de la aplicación.",
-            modifier = Modifier.padding(8.dp)
-        )
+    LazyColumn {
+        items(items = elementos) { elemento: String ->
+            Text(elemento, modifier = Modifier.padding(10.dp))
+        }
     }
 }
-
