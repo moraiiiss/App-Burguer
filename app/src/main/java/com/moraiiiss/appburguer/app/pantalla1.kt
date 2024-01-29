@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -168,7 +167,7 @@ fun BotonFloating() {
         ) {
         Icon(
             imageVector = Icons.Default.ShoppingCart,
-            contentDescription = "Opciones menú",
+            contentDescription = "pedido",
             tint = Color.Black,
             modifier = Modifier
                 .height(30.dp)
@@ -205,7 +204,7 @@ fun ContenidoPagina1() {
             )
         }
         Spacer(modifier = Modifier.height(5.dp))
-        TextoPredeterminado("Pincha dentro de la Hamburguesa ")
+        TextoPredeterminado("Pincha dentro de la Hamburguesa ", modifier = TextAlign.Center)
 
         ListasHamburguesas()
     }
@@ -214,7 +213,7 @@ fun ContenidoPagina1() {
 
 @Composable
 fun ListasHamburguesas() {
-    val hamburguesasList = Gethamburguersas()
+    val hamburguesasList = gethamburguersas()
 
     LazyVerticalGrid(columns = GridCells.Fixed(1), modifier = Modifier.padding(15.dp)) {
         items(hamburguesasList) { hamburguesa ->
@@ -265,7 +264,7 @@ fun ListasHamburguesas() {
     }
 
 
-    fun Gethamburguersas(): List<Hamburguesas> {//Lista de hamburguesas
+    fun gethamburguersas(): List<Hamburguesas> {//Lista de hamburguesas
         return listOf(
             Hamburguesas("California", "Carne", 12.5f, R.drawable.california),
             Hamburguesas("King Buffalo", "Carne", 13.5f, R.drawable.kingbuffalo),
@@ -278,6 +277,6 @@ fun ListasHamburguesas() {
     }
 
 @Composable
-fun TextoPredeterminado(texto:String){
-    Text(text = texto)
+fun TextoPredeterminado(texto:String, modifier: TextAlign){
+    Text(text = texto, modifier = Modifier.fillMaxWidth(), color = Color.Black)
 }
