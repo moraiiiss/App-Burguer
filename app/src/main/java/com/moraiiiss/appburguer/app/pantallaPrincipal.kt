@@ -52,26 +52,28 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.moraiiiss.appburguer.R
 import com.moraiiiss.appburguer.data.Hamburguesas
+import com.moraiiiss.appburguer.data.RutasNavegacion
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview(showSystemUi = true)
 @Composable
-fun Pantalla1() {
+fun PantallaPrincipal(controlNavegacion:NavController) {
 
 
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
-        topBar = { Topbar() },
+        topBar = { TopBarPantallaPrincipal() },
         bottomBar = { NavigationBar() },
         floatingActionButton = { BotonFloating() },
         floatingActionButtonPosition = FabPosition.End,
 
 
         ) {
-        ContenidoPagina1()
+        ContenidoPagina1(controlNavegacion)
     }
 
 
@@ -79,7 +81,7 @@ fun Pantalla1() {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun Topbar() {
+fun TopBarPantallaPrincipal() {
     TopAppBar(modifier = Modifier
         .background(color = Color(0xFF8D6E63))
         .padding(5.dp),
@@ -177,7 +179,7 @@ fun BotonFloating() {
 }
 
 @Composable
-fun ContenidoPagina1() {
+fun ContenidoPagina1( controlNavegacion: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -206,27 +208,27 @@ fun ContenidoPagina1() {
         Spacer(modifier = Modifier.height(5.dp))
         TextoPredeterminado("Pincha dentro de la Hamburguesa ", modifier = TextAlign.Center)
 
-        ListasHamburguesas()
+        ListasHamburguesas(controlNavegacion)
     }
 }
 
 
 @Composable
-fun ListasHamburguesas() {
+fun ListasHamburguesas( controlNavegacion: NavController) {
     val hamburguesasList = gethamburguersas()
 
     LazyVerticalGrid(columns = GridCells.Fixed(1), modifier = Modifier.padding(15.dp)) {
         items(hamburguesasList) { hamburguesa ->
-            VistaHamburguesas(hamburguesas = hamburguesa)
+            VistaHamburguesas(hamburguesas = hamburguesa, controlNavegacion = controlNavegacion)
         }
     }
 }
 
     @Composable
-    fun VistaHamburguesas(hamburguesas: Hamburguesas) {
+    fun VistaHamburguesas(hamburguesas: Hamburguesas, controlNavegacion: NavController) {
         Card(modifier = Modifier
             .width(200.dp)
-            .clickable { }
+            .clickable { controlNavegacion.navigate(RutasNavegacion.PantallaInformacion.ruta)}
             .padding(10.dp)
             .border(2.dp, color = Color(0xFFE6AB30), shape = ShapeDefaults.Large)) {
             Column (modifier = Modifier.padding(9.dp)) {
