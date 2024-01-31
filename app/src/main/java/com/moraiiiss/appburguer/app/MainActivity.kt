@@ -3,7 +3,6 @@ package com.moraiiiss.appburguer.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.fragment.app.FragmentManager.BackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,11 +24,12 @@ class MainActivity : ComponentActivity() {
             NavHost(
                 navController = controlNavegacion,
                 startDestination = RutasNavegacion.PantallaPrincipal.ruta
+
             ) {
                 composable(RutasNavegacion.PantallaPrincipal.ruta) {
                     PantallaPrincipal(
                         navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaInformacion.ruta) },
-                        abreHamburguesas = { idNavegacion -> controlNavegacion.navigate("${RutasNavegacion.PantallaInformacion.ruta}/$it") }
+                        abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaBurguerCalifornia.ruta}/$id") }//no quiero que coja la ruta de la primera hamburguesa pq sino no me cambia de hamburguesa cuando quiero otra
 
                     )
                 }
@@ -42,11 +42,19 @@ class MainActivity : ComponentActivity() {
                 }
 
                 composable(
-                    route = RutasNavegacion.pantallaBurguer1.ruta,
-                    arguments = listOf(navArgument("idNavegacion"){ type = NavType.IntType})
+                    route = "${RutasNavegacion.PantallaBurguerCalifornia.ruta}/{id}",
+                    arguments = listOf(navArgument("id"){ type = NavType.IntType})
                 ) {backStackEntry ->
-                    backStackEntry.arguments?.getInt("idNavegacion")
-                    RutasNavegacion.pantallaBurguer1.ruta
+                   val id = backStackEntry.arguments?.getInt("id") ?: 99
+                    PantallaBurguerCalifornia(id)
+                }
+
+                composable(
+                    route = "${RutasNavegacion.PantallaBurguerKingBuffalo.ruta}/{id}",
+                    arguments = listOf(navArgument("id"){ type = NavType.IntType})
+                ) {backStackEntry ->
+                    val id = backStackEntry.arguments?.getInt("id") ?: 99
+                    PantallaBurguerKingBuffalo(id)
                 }
 
 

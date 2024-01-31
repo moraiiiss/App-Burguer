@@ -70,7 +70,7 @@ fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> 
 
 
         ) { innerPadding ->
-        ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = { })
+        ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = abreHamburguesas)
     }
 
 
@@ -206,7 +206,7 @@ fun ContenidoPaginaPrincipal(modifier: Modifier = Modifier, abreHamburguesas: (I
                 .padding(horizontal = 10.dp)
         )
 
-        ListasHamburguesas(abreHamburguesas)
+        ListasHamburguesas(abreHamburguesas = abreHamburguesas)
     }
 }
 
