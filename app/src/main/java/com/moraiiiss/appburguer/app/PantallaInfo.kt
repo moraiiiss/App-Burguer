@@ -35,29 +35,36 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.moraiiiss.appburguer.data.RutasNavegacion
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview(showSystemUi = true)
 @Composable
-fun PantallaInformation(controlNavegacion: NavController) {
+
+fun PantallaInformation(navegacionFuncion: () -> Unit) {
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
-        topBar = { TopBarPantallaInformation(controlNavegacion) },
+        topBar = { TopBarPantallaInformation(navegacionFuncion) },
         floatingActionButton = { BotonFloating() },
         floatingActionButtonPosition = FabPosition.End,
-    ) {
+    ) { innerPadding ->
         // Contenido de la pantalla
 
-        ContenidoPaginaInformacion()
+        ContenidoPaginaInformacion( modifier = Modifier.padding(innerPadding))
+    }
+}
+@Preview
+@Composable
+
+fun ViewPantallaInformation() {
+    PantallaInformation {
+
     }
 }
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarPantallaInformation(controlNavegacion: NavController) {
+fun TopBarPantallaInformation(navegacionFuncion: () -> Unit) {
     TopAppBar(
         title = {
             val offset = Offset(4.0f, 6.0f)
@@ -82,7 +89,7 @@ fun TopBarPantallaInformation(controlNavegacion: NavController) {
             )
         },
         navigationIcon = {
-            IconButton(onClick = {  controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta)}) {
+            IconButton(onClick = {navegacionFuncion()}) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Atrás",
@@ -103,7 +110,7 @@ fun TopBarPantallaInformation(controlNavegacion: NavController) {
 }
 
 @Composable
-fun ContenidoPaginaInformacion() {
+fun ContenidoPaginaInformacion(modifier: Modifier = Modifier) {
 
 
     Column(

@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -52,36 +51,42 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.moraiiiss.appburguer.R
 import com.moraiiiss.appburguer.data.Hamburguesas
-import com.moraiiiss.appburguer.data.RutasNavegacion
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview(showSystemUi = true)
 @Composable
-fun PantallaPrincipal(controlNavegacion:NavController) {
+fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> Unit) {
 
 
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
-        topBar = { TopBarPantallaPrincipal() },
+        topBar = { TopBarPantallaPrincipal(navegacionFuncion) },
         bottomBar = { NavigationBar() },
         floatingActionButton = { BotonFloating() },
         floatingActionButtonPosition = FabPosition.End,
 
 
-        ) {
-        ContenidoPagina1(controlNavegacion)
+        ) { innerPadding ->
+        ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = { })
     }
 
 
 }
 
+@Preview
+@Composable
+fun ViewPantallaPrincipal() {
+
+    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { })
+
+}
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun TopBarPantallaPrincipal() {
+fun TopBarPantallaPrincipal(navegacionFuncion: () -> Unit) {
     TopAppBar(modifier = Modifier
         .background(color = Color(0xFF8D6E63))
         .padding(5.dp),
@@ -109,21 +114,10 @@ fun TopBarPantallaPrincipal() {
             Color(0xFF8D6E63), navigationIconContentColor = Color(
                 0xFF000000
             )
-        ), /*navigationIcon = {
-            IconButton(onClick = { /* Acción de navegación menú */ }) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Menu aplicación",
-                    modifier = Modifier
-                        .height(28.dp)
-                        .width(50.dp)
-                )
-            }
+        ),
 
-
-},*/
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {//boton para ver el pedido del cliente
+            IconButton(onClick = { navegacionFuncion() }) {//boton para ver el pedido del cliente
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = "Pedido cliente",
@@ -162,7 +156,7 @@ fun NavigationBar() {
 @Composable
 fun BotonFloating() {
     FloatingActionButton(
-        onClick = { /*TODO*/ },
+        onClick = { },
         containerColor = Color(0xFFE6AB30),
 
 
@@ -179,13 +173,13 @@ fun BotonFloating() {
 }
 
 @Composable
-fun ContenidoPagina1( controlNavegacion: NavController) {
+fun ContenidoPaginaPrincipal(modifier: Modifier = Modifier, abreHamburguesas: (Int) -> Unit) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(10.dp)
+
     ) {
-        Spacer(modifier = Modifier.height(60.dp))
+
         // Card
         Card(
             modifier = Modifier
@@ -205,80 +199,87 @@ fun ContenidoPagina1( controlNavegacion: NavController) {
                 color = Color(0xFF8D6E63)
             )
         }
-        Spacer(modifier = Modifier.height(5.dp))
-        TextoPredeterminado("Pincha dentro de la Hamburguesa ", modifier = TextAlign.Center)
 
-        ListasHamburguesas(controlNavegacion)
-    }
-}
-
-
-@Composable
-fun ListasHamburguesas( controlNavegacion: NavController) {
-    val hamburguesasList = gethamburguersas()
-
-    LazyVerticalGrid(columns = GridCells.Fixed(1), modifier = Modifier.padding(15.dp)) {
-        items(hamburguesasList) { hamburguesa ->
-            VistaHamburguesas(hamburguesas = hamburguesa, controlNavegacion = controlNavegacion)
-        }
-    }
-}
-
-    @Composable
-    fun VistaHamburguesas(hamburguesas: Hamburguesas, controlNavegacion: NavController) {
-        Card(modifier = Modifier
-            .width(200.dp)
-            .clickable { controlNavegacion.navigate(RutasNavegacion.PantallaInformacion.ruta)}
-            .padding(10.dp)
-            .border(2.dp, color = Color(0xFFE6AB30), shape = ShapeDefaults.Large)) {
-            Column (modifier = Modifier.padding(9.dp)) {
-                Image(
-                    painter = painterResource(id = hamburguesas.imagen),
-                    contentDescription = "Imagen de la Hamburguesa",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(shape = RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop,
-
-                )
-                Text(
-                    text = hamburguesas.nombre,
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontSize = 15.sp)) {
-                            append(String.format("%.2f", hamburguesas.precio))
-                        }
-                        append("€")
-                    }, modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = 8.sp
-                )
-                Text(
-                    text = hamburguesas.tipo,
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    fontSize = 10.sp
-                )
-            }
-
-        }
-    }
-
-
-    fun gethamburguersas(): List<Hamburguesas> {//Lista de hamburguesas
-        return listOf(
-            Hamburguesas("California", "Carne", 12.5f, R.drawable.california),
-            Hamburguesas("King Buffalo", "Carne", 13.5f, R.drawable.kingbuffalo),
-            Hamburguesas("The Ultimate", "Carne", 15.0f, R.drawable.theultimate),
-            Hamburguesas("Iberian Burger", "Carne", 15.0f, R.drawable.iberianburger),
-            Hamburguesas("Le Poulet", "Pollo", 10.5f, R.drawable.poulet),
-            Hamburguesas("Vegan Burger", "Vegana", 11.9f, R.drawable.vegana),
+        TextoPredeterminado(
+            "Pincha dentro de la Hamburguesa ", modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
         )
 
+        ListasHamburguesas(abreHamburguesas)
     }
+}
+
 
 @Composable
-fun TextoPredeterminado(texto:String, modifier: TextAlign){
-    Text(text = texto, modifier = Modifier.fillMaxWidth(), color = Color.Black)
+fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit) {
+    val hamburguesasList = gethamburguersas()
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(1),
+        modifier = Modifier.padding(horizontal = 20.dp)
+    ) {
+        items(hamburguesasList) { hamburguesa ->
+            VistaHamburguesas(hamburguesas = hamburguesa, abreHamburguesas)
+        }
+    }
+}
+
+@Composable
+fun VistaHamburguesas(hamburguesas: Hamburguesas, abreHamburguesas: (Int) -> Unit) {
+    Card(modifier = Modifier
+        .width(200.dp)
+        .clickable { abreHamburguesas(hamburguesas.idNavegacion) }
+        .padding(10.dp)
+        .border(2.dp, color = Color(0xFFE6AB30), shape = ShapeDefaults.Large)) {
+        Column(modifier = Modifier.padding(9.dp)) {
+            Image(
+                painter = painterResource(id = hamburguesas.imagen),
+                contentDescription = "Imagen de la Hamburguesa",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop,
+
+                )
+            Text(
+                text = hamburguesas.nombre,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(fontSize = 15.sp)) {
+                        append(String.format("%.2f", hamburguesas.precio))
+                    }
+                    append("€")
+                }, modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = 8.sp
+            )
+            Text(
+                text = hamburguesas.tipo,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                fontSize = 10.sp
+            )
+        }
+
+    }
+}
+
+
+fun gethamburguersas(): List<Hamburguesas> {//Lista de hamburguesas
+    return listOf(
+        Hamburguesas(1, "California", "Carne", 12.5f, R.drawable.california),
+        Hamburguesas(2, "King Buffalo", "Carne", 13.5f, R.drawable.kingbuffalo),
+        Hamburguesas(3, "The Ultimate", "Carne", 15.0f, R.drawable.theultimate),
+        Hamburguesas(4, "Iberian Burger", "Carne", 15.0f, R.drawable.iberianburger),
+        Hamburguesas(5, "Le Poulet", "Pollo", 10.5f, R.drawable.poulet),
+        Hamburguesas(6, "Vegan Burger", "Vegana", 11.9f, R.drawable.vegana),
+    )
+
+}
+
+@Composable
+fun TextoPredeterminado(texto: String, modifier: Modifier = Modifier) {
+    Text(text = texto, modifier = modifier, color = Color.Black)
 }
