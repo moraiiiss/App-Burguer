@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app
+package com.moraiiiss.appburguer.app.Screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -33,6 +33,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,13 +53,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moraiiiss.appburguer.R
 import com.moraiiiss.appburguer.data.Hamburguesas
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> Unit) {
+fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> Unit, principalViewModel: PrincipalViewModel) {
 
 
     Scaffold(
@@ -70,7 +71,7 @@ fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> 
 
 
         ) { innerPadding ->
-        ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = abreHamburguesas)
+        ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = abreHamburguesas,principalViewModel = PrincipalViewModel())
     }
 
 
@@ -80,7 +81,7 @@ fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> 
 @Composable
 fun ViewPantallaPrincipal() {
 
-    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { })
+    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { }, principalViewModel = PrincipalViewModel())
 
 }
 
@@ -173,7 +174,11 @@ fun BotonFloating() {
 }
 
 @Composable
-fun ContenidoPaginaPrincipal(modifier: Modifier = Modifier, abreHamburguesas: (Int) -> Unit) {
+fun ContenidoPaginaPrincipal(
+    modifier: Modifier = Modifier,
+    abreHamburguesas: (Int) -> Unit,
+    principalViewModel: PrincipalViewModel
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -206,30 +211,32 @@ fun ContenidoPaginaPrincipal(modifier: Modifier = Modifier, abreHamburguesas: (I
                 .padding(horizontal = 10.dp)
         )
 
-        ListasHamburguesas(abreHamburguesas = abreHamburguesas)
+        ListasHamburguesas(abreHamburguesas = abreHamburguesas, principalViewModel = PrincipalViewModel())
     }
 }
 
 
 @Composable
-fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit) {
-    val hamburguesasList = gethamburguersas()
+fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, principalViewModel: PrincipalViewModel) {
+    val hamburguesas by principalViewModel.hamburguesas.observeAsState(listOf())
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
         modifier = Modifier.padding(horizontal = 20.dp)
     ) {
-        items(hamburguesasList) { hamburguesa ->
+        items(hamburguesas) {hamburguesa ->
             VistaHamburguesas(hamburguesas = hamburguesa, abreHamburguesas)
         }
     }
 }
 
+
+
 @Composable
 fun VistaHamburguesas(hamburguesas: Hamburguesas, abreHamburguesas: (Int) -> Unit) {
     Card(modifier = Modifier
         .width(200.dp)
-        .clickable { abreHamburguesas(hamburguesas.idNavegacion) }
+        .clickable {  abreHamburguesas(hamburguesas.idNavegacion)  }
         .padding(10.dp)
         .border(2.dp, color = Color(0xFFE6AB30), shape = ShapeDefaults.Large)) {
         Column(modifier = Modifier.padding(9.dp)) {
@@ -267,17 +274,6 @@ fun VistaHamburguesas(hamburguesas: Hamburguesas, abreHamburguesas: (Int) -> Uni
 }
 
 
-fun gethamburguersas(): List<Hamburguesas> {//Lista de hamburguesas
-    return listOf(
-        Hamburguesas(1, "California", "Carne", 12.5f, R.drawable.california),
-        Hamburguesas(2, "King Buffalo", "Carne", 13.5f, R.drawable.kingbuffalo),
-        Hamburguesas(3, "The Ultimate", "Carne", 15.0f, R.drawable.theultimate),
-        Hamburguesas(4, "Iberian Burger", "Carne", 15.0f, R.drawable.iberianburger),
-        Hamburguesas(5, "Le Poulet", "Pollo", 10.5f, R.drawable.poulet),
-        Hamburguesas(6, "Vegan Burger", "Vegana", 11.9f, R.drawable.vegana),
-    )
-
-}
 
 @Composable
 fun TextoPredeterminado(texto: String, modifier: Modifier = Modifier) {

@@ -1,6 +1,5 @@
-package com.moraiiiss.appburguer.app
+package com.moraiiiss.appburguer.app.Screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

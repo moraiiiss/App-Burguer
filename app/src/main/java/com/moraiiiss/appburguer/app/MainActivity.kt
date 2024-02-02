@@ -9,9 +9,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.moraiiiss.appburguer.R
+import com.moraiiiss.appburguer.app.Screen.PantallaBurguerCalifornia
+import com.moraiiiss.appburguer.app.Screen.PantallaBurguerKingBuffalo
+import com.moraiiiss.appburguer.app.Screen.PantallaInformation
+import com.moraiiiss.appburguer.app.Screen.PantallaPrincipal
+import com.moraiiiss.appburguer.app.Screen.PrincipalViewModel
 import com.moraiiiss.appburguer.data.RutasNavegacion
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +35,8 @@ class MainActivity : ComponentActivity() {
                 composable(RutasNavegacion.PantallaPrincipal.ruta) {
                     PantallaPrincipal(
                         navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaInformacion.ruta) },
-                        abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaBurguerCalifornia.ruta}/$id") }//no quiero que coja la ruta de la primera hamburguesa pq sino no me cambia de hamburguesa cuando quiero otra
-
+                        abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaBurguerCalifornia.ruta}/$id") },//no quiero que coja la ruta de la primera hamburguesa pq sino no me cambia de hamburguesa cuando quiero otra
+                        principalViewModel = PrincipalViewModel()
                     )
                 }
                 composable(RutasNavegacion.PantallaInformacion.ruta) {
@@ -40,6 +46,7 @@ class MainActivity : ComponentActivity() {
                         )
                     })
                 }
+
 
                 composable(
                     route = "${RutasNavegacion.PantallaBurguerCalifornia.ruta}/{id}",
