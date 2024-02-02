@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.moraiiiss.appburguer.R
 import com.moraiiiss.appburguer.data.Hamburguesas
 import com.moraiiiss.appburguer.data.RutasNavegacion
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class PrincipalViewModel : ViewModel() {
+@HiltViewModel
+class PrincipalViewModel @Inject constructor() : ViewModel() {
 
     private val _hamburguesas = MutableLiveData<List<Hamburguesas>>()//creamos un livedata mutable
     val hamburguesas: LiveData<List<Hamburguesas>> = _hamburguesas//creamos un livedata inmutable

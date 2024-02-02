@@ -3,6 +3,7 @@ package com.moraiiiss.appburguer.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,6 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val principalViewModel: PrincipalViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -36,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     PantallaPrincipal(
                         navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaInformacion.ruta) },
                         abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaBurguerCalifornia.ruta}/$id") },//no quiero que coja la ruta de la primera hamburguesa pq sino no me cambia de hamburguesa cuando quiero otra
-                        principalViewModel = PrincipalViewModel()
+                        principalViewModel = principalViewModel
                     )
                 }
                 composable(RutasNavegacion.PantallaInformacion.ruta) {
