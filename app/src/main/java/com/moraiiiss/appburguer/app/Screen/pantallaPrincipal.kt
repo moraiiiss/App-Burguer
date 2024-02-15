@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -53,7 +54,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.moraiiiss.appburguer.data.BaseDatos
 import com.moraiiiss.appburguer.data.Hamburguesas
+import com.moraiiiss.appburguer.data.HamburguesasEntry
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -71,7 +74,7 @@ fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> 
 
 
         ) { innerPadding ->
-        ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = abreHamburguesas,principalViewModel = PrincipalViewModel())
+        ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = abreHamburguesas,principalViewModel = principalViewModel)
     }
 
 
@@ -81,7 +84,7 @@ fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> 
 @Composable
 fun ViewPantallaPrincipal() {
 
-    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { }, principalViewModel = PrincipalViewModel())
+    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { }, principalViewModel = {} as PrincipalViewModel)
 
 }
 
@@ -211,7 +214,7 @@ fun ContenidoPaginaPrincipal(
                 .padding(horizontal = 10.dp)
         )
 
-        ListasHamburguesas(abreHamburguesas = abreHamburguesas, principalViewModel = PrincipalViewModel())
+        ListasHamburguesas(abreHamburguesas = abreHamburguesas, principalViewModel = principalViewModel)
     }
 }
 
@@ -225,7 +228,7 @@ fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, principalViewModel: Prin
         modifier = Modifier.padding(horizontal = 20.dp)
     ) {
         items(hamburguesas) {hamburguesa ->
-            VistaHamburguesas(hamburguesas = hamburguesa, abreHamburguesas)
+            VistaHamburguesas(hamburguesa = hamburguesa, abreHamburguesas)
         }
     }
 }
@@ -233,15 +236,15 @@ fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, principalViewModel: Prin
 
 
 @Composable
-fun VistaHamburguesas(hamburguesas: Hamburguesas, abreHamburguesas: (Int) -> Unit) {
+fun VistaHamburguesas(hamburguesa: Hamburguesas, abreHamburguesas: (Int) -> Unit) {
     Card(modifier = Modifier
         .width(200.dp)
-        .clickable {  abreHamburguesas(hamburguesas.idNavegacion)  }
+        .clickable {  abreHamburguesas(hamburguesa.idNavegacion)  }
         .padding(10.dp)
         .border(2.dp, color = Color(0xFFE6AB30), shape = ShapeDefaults.Large)) {
         Column(modifier = Modifier.padding(9.dp)) {
             Image(
-                painter = painterResource(id = hamburguesas.imagen),
+                painter = painterResource(id = hamburguesa.imagen),
                 contentDescription = "Imagen de la Hamburguesa",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -250,7 +253,7 @@ fun VistaHamburguesas(hamburguesas: Hamburguesas, abreHamburguesas: (Int) -> Uni
 
                 )
             Text(
-                text = hamburguesas.nombre,
+                text = hamburguesa.nombre,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
@@ -258,13 +261,13 @@ fun VistaHamburguesas(hamburguesas: Hamburguesas, abreHamburguesas: (Int) -> Uni
             Text(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(fontSize = 15.sp)) {
-                        append(String.format("%.2f", hamburguesas.precio))
+                        append(String.format("%.2f", hamburguesa.precio))
                     }
                     append("€")
                 }, modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = 8.sp
             )
             Text(
-                text = hamburguesas.tipo,
+                text = hamburguesa.tipo,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontSize = 10.sp
             )

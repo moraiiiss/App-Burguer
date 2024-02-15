@@ -38,27 +38,22 @@ class MainActivity : ComponentActivity() {
                 composable(RutasNavegacion.PantallaPrincipal.ruta) {
                     PantallaPrincipal(
                         navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaInformacion.ruta) },
-                        abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaBurguerCalifornia.ruta}/$id") },//no quiero que coja la ruta de la primera hamburguesa pq sino no me cambia de hamburguesa cuando quiero otra
+                        abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaBurguerCalifornia.ruta}/$id") },
                         principalViewModel = principalViewModel
                     )
                 }
                 composable(RutasNavegacion.PantallaInformacion.ruta) {
                     PantallaInformation(navegacionFuncion = {
-                        controlNavegacion.navigate(
-                            RutasNavegacion.PantallaPrincipal.ruta
-                        )
+                        controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta)
                     })
                 }
-
-
                 composable(
                     route = "${RutasNavegacion.PantallaBurguerCalifornia.ruta}/{id}",
                     arguments = listOf(navArgument("id"){ type = NavType.IntType})
                 ) {backStackEntry ->
-                   val id = backStackEntry.arguments?.getInt("id") ?: 99
+                    val id = backStackEntry.arguments?.getInt("id") ?: 99
                     PantallaBurguerCalifornia(id)
                 }
-
                 composable(
                     route = "${RutasNavegacion.PantallaBurguerKingBuffalo.ruta}/{id}",
                     arguments = listOf(navArgument("id"){ type = NavType.IntType})
@@ -66,8 +61,6 @@ class MainActivity : ComponentActivity() {
                     val id = backStackEntry.arguments?.getInt("id") ?: 99
                     PantallaBurguerKingBuffalo(id)
                 }
-
-
             }
 
         }
