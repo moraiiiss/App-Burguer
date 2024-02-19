@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.data
+package com.moraiiiss.appburguer.app
 
 sealed class RutasNavegacion(val ruta: String) {
     object PantallaPrincipal : RutasNavegacion("PantallaPrincipal")

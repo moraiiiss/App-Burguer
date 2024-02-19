@@ -1,14 +1,13 @@
-package com.moraiiiss.appburguer.app.Screen
+package com.moraiiiss.appburguer.app.Screen.PantallaPrincipal
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.moraiiiss.appburguer.R
 import com.moraiiiss.appburguer.data.BaseDatos
 import com.moraiiiss.appburguer.data.Hamburguesas
 import com.moraiiiss.appburguer.data.HamburguesasEntry
-import com.moraiiiss.appburguer.data.RutasNavegacion
+import com.moraiiiss.appburguer.app.RutasNavegacion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -60,7 +59,7 @@ class PrincipalViewModel @Inject constructor(application: Application) : Android
             }
         }
         cursor.close() //cerramos el cursor
-        db.close() //cerramos la base de datos
+
 
         return hamburguesas
     }

@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app.Screen
+package com.moraiiiss.appburguer.app.Screen.PantallaInformacion
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -42,8 +41,7 @@ fun PantallaInformation(navegacionFuncion: () -> Unit) {
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
         topBar = { TopBarPantallaInformation(navegacionFuncion) },
-        floatingActionButton = { BotonFloating() },
-        floatingActionButtonPosition = FabPosition.End,
+
     ) { innerPadding ->
         // Contenido de la pantalla
 

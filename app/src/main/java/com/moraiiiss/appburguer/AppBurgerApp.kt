@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app
+package com.moraiiiss.appburguer
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

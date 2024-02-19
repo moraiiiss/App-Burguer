@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app.Screen
+package com.moraiiiss.appburguer.app.Screen.PantallaPrincipal
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -17,13 +17,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
@@ -41,7 +38,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -54,14 +50,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moraiiiss.appburguer.data.BaseDatos
 import com.moraiiiss.appburguer.data.Hamburguesas
-import com.moraiiiss.appburguer.data.HamburguesasEntry
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> Unit, principalViewModel: PrincipalViewModel) {
+fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> Unit, principalViewModel: PrincipalViewModel?) {
 
 
     Scaffold(
@@ -69,12 +63,11 @@ fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> 
         contentColor = Color(0xFFE6AB30),
         topBar = { TopBarPantallaPrincipal(navegacionFuncion) },
         bottomBar = { NavigationBar() },
-        floatingActionButton = { BotonFloating() },
-        floatingActionButtonPosition = FabPosition.End,
-
 
         ) { innerPadding ->
-        ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = abreHamburguesas,principalViewModel = principalViewModel)
+        if (principalViewModel != null) {
+            ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = abreHamburguesas,principalViewModel = principalViewModel)
+        }
     }
 
 
@@ -84,7 +77,7 @@ fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> 
 @Composable
 fun ViewPantallaPrincipal() {
 
-    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { }, principalViewModel = {} as PrincipalViewModel)
+    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { }, principalViewModel = null)
 
 }
 
@@ -133,7 +126,7 @@ fun TopBarPantallaPrincipal(navegacionFuncion: () -> Unit) {
             }
             IconButton(onClick = { /*TODO*/ }) { //boton para acceso de la cuenta del cliente
                 Icon(
-                    imageVector = Icons.Default.AccountCircle,
+                    imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Pedido cliente",
                     tint = Color(0xFFE6AB30),
                     modifier = Modifier
@@ -157,24 +150,7 @@ fun NavigationBar() {
     }
 }
 
-@Composable
-fun BotonFloating() {
-    FloatingActionButton(
-        onClick = { },
-        containerColor = Color(0xFFE6AB30),
 
-
-        ) {
-        Icon(
-            imageVector = Icons.Default.ShoppingCart,
-            contentDescription = "pedido",
-            tint = Color.Black,
-            modifier = Modifier
-                .height(30.dp)
-                .width(40.dp)
-        )
-    }
-}
 
 @Composable
 fun ContenidoPaginaPrincipal(
