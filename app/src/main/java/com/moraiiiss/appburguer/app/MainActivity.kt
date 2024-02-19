@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 composable(RutasNavegacion.PantallaPrincipal.ruta) {
                     PantallaPrincipal(
                         navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaInformacion.ruta) },
-                        abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaBurguerCalifornia.ruta}/$id") },
+                        abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaDetallesHambuguesa.ruta}/$id") },
                         principalViewModel = principalViewModel
                     )
                 }
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     })
                 }
                 composable(
-                    route = "${RutasNavegacion.PantallaBurguerCalifornia.ruta}/{id}",
+                    route = "${RutasNavegacion.PantallaDetallesHambuguesa.ruta}/{id}",
                     arguments = listOf(navArgument("id") { type = NavType.IntType })
                 ) { backStackEntry ->
                     val id = backStackEntry.arguments?.getInt("id") ?: 99

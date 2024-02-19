@@ -6,5 +6,6 @@ sealed class RutasNavegacion(val ruta: String) {
     object PantallaBurguerCalifornia : RutasNavegacion("PantallaBurguerCalifornia")
 
     object PantallaBurguerKingBuffalo : RutasNavegacion("PantallaBurguerKingBuffalo")
+    object PantallaDetallesHambuguesa : RutasNavegacion("PantallaDetallesHambuguesa")
 
 }
