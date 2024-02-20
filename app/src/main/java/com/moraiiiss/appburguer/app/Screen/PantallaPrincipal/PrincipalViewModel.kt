@@ -4,11 +4,15 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.moraiiiss.appburguer.data.BaseDatos
 import com.moraiiiss.appburguer.data.Hamburguesas
-import com.moraiiiss.appburguer.data.HamburguesasEntry
+import com.moraiiiss.appburguer.data.HamburguesaEntry
 import com.moraiiiss.appburguer.app.RutasNavegacion
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,29 +20,30 @@ class PrincipalViewModel @Inject constructor(application: Application) : Android
 
     private val dbHelper = BaseDatos(application)
 
-    private val _hamburguesas = MutableLiveData<List<Hamburguesas>>()//creamos un livedata mutable
-    val hamburguesas: LiveData<List<Hamburguesas>> = _hamburguesas//creamos un livedata inmutable
+    private val _hamburguesas = MutableStateFlow<List<Hamburguesas>>(emptyList())
+    val hamburguesas: StateFlow<List<Hamburguesas>> = _hamburguesas
 
-    private val _navegacion = MutableLiveData<RutasNavegacion>()//creamos un livedata mutable
-    val navegacion: LiveData<RutasNavegacion> = _navegacion //creamos un livedata inmutable
+    private val _navegacion = MutableStateFlow<RutasNavegacion>(RutasNavegacion.PantallaPrincipal)
+    val navegacion: StateFlow<RutasNavegacion> = _navegacion
 
-    init {//inicializamos el livedata
+    init {
         _hamburguesas.value = getHamburguersas()//le damos el valor de la lista de hamburguesas
+        cargarHamburguesas()//cargamos las hamburguesas
     }
 
     private fun getHamburguersas(): List<Hamburguesas> {
         val db = dbHelper.readableDatabase
 
         val projection = arrayOf( //creamos un array con las columnas de la base de datos
-            HamburguesasEntry.COLUMN_ID,
-            HamburguesasEntry.COLUMN_NOMBRE,
-            HamburguesasEntry.COLUMN_TIPO,
-            HamburguesasEntry.COLUMN_PRECIO,
-            HamburguesasEntry.COLUMN_IMAGEN
+            HamburguesaEntry.COLUMN_ID,
+            HamburguesaEntry.COLUMN_NOMBRE,
+            HamburguesaEntry.COLUMN_TIPO,
+            HamburguesaEntry.COLUMN_PRECIO,
+            HamburguesaEntry.COLUMN_IMAGEN
         )
 
         val cursor = db.query( //creamos un cursor para recorrer la base de datos
-            HamburguesasEntry.TABLE_NAME,
+            HamburguesaEntry.TABLE_NAME,
             projection,
             null,
             null,
@@ -50,11 +55,11 @@ class PrincipalViewModel @Inject constructor(application: Application) : Android
         val hamburguesas = mutableListOf<Hamburguesas>()//creamos una lista mutable de hamburguesas
         with(cursor) {//creamos un bucle para recorrer el cursor
             while (moveToNext()) {//recorremos el cursor
-                val id = getInt(getColumnIndexOrThrow(HamburguesasEntry.COLUMN_ID))
-                val nombre = getString(getColumnIndexOrThrow(HamburguesasEntry.COLUMN_NOMBRE))
-                val tipo = getString(getColumnIndexOrThrow(HamburguesasEntry.COLUMN_TIPO))
-                val precio = getFloat(getColumnIndexOrThrow(HamburguesasEntry.COLUMN_PRECIO))
-                val imagen = getInt(getColumnIndexOrThrow(HamburguesasEntry.COLUMN_IMAGEN))
+                val id = getInt(getColumnIndexOrThrow(HamburguesaEntry.COLUMN_ID))
+                val nombre = getString(getColumnIndexOrThrow(HamburguesaEntry.COLUMN_NOMBRE))
+                val tipo = getString(getColumnIndexOrThrow(HamburguesaEntry.COLUMN_TIPO))
+                val precio = getFloat(getColumnIndexOrThrow(HamburguesaEntry.COLUMN_PRECIO))
+                val imagen = getInt(getColumnIndexOrThrow(HamburguesaEntry.COLUMN_IMAGEN))
                 hamburguesas.add(Hamburguesas(id, nombre, tipo, precio, imagen))
             }
         }
@@ -62,5 +67,12 @@ class PrincipalViewModel @Inject constructor(application: Application) : Android
 
 
         return hamburguesas
+    }
+
+    fun cargarHamburguesas() {
+        viewModelScope.launch {
+            val hamburguesas = dbHelper.obtenerTodasLasHamburguesas()
+            _hamburguesas.value = hamburguesas
+        }
     }
 }

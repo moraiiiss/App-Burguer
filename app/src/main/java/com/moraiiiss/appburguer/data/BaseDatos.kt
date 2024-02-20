@@ -1,5 +1,6 @@
 package com.moraiiiss.appburguer.data
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -14,13 +15,13 @@ class BaseDatos(context: Context) :
         private const val DATABASE_VERSION = 2
     }
 
-    override fun onCreate(db: SQLiteDatabase) {
-        val SQL_CREATE_HAMBURGUESAS_TABLE = "CREATE TABLE " + HamburguesasEntry.TABLE_NAME + " (" +
-                HamburguesasEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                HamburguesasEntry.COLUMN_NOMBRE + " TEXT NOT NULL, " +
-                HamburguesasEntry.COLUMN_TIPO + " TEXT, " +
-                HamburguesasEntry.COLUMN_PRECIO + " REAL, " +
-                HamburguesasEntry.COLUMN_IMAGEN + " BLOB);"
+    override fun onCreate(db: SQLiteDatabase) {//creamos la tabla hamburguesas
+        val SQL_CREATE_HAMBURGUESAS_TABLE = "CREATE TABLE " + HamburguesaEntry.TABLE_NAME + " (" +
+                HamburguesaEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                HamburguesaEntry.COLUMN_NOMBRE + " TEXT NOT NULL, " +
+                HamburguesaEntry.COLUMN_TIPO + " TEXT, " +
+                HamburguesaEntry.COLUMN_PRECIO + " REAL, " +
+                HamburguesaEntry.COLUMN_IMAGEN + " BLOB);"
         db.execSQL(SQL_CREATE_HAMBURGUESAS_TABLE)
 
 
@@ -36,18 +37,40 @@ class BaseDatos(context: Context) :
 
         for (hamburguesa in hamburguesas) {
             val values = ContentValues().apply {
-                put(HamburguesasEntry.COLUMN_NOMBRE, hamburguesa[0] as String)
-                put(HamburguesasEntry.COLUMN_TIPO, hamburguesa[1] as String)
-                put(HamburguesasEntry.COLUMN_PRECIO, hamburguesa[2] as Double)
-                put(HamburguesasEntry.COLUMN_IMAGEN, hamburguesa[3] as Int)
+                put(HamburguesaEntry.COLUMN_NOMBRE, hamburguesa[0] as String)
+                put(HamburguesaEntry.COLUMN_TIPO, hamburguesa[1] as String)
+                put(HamburguesaEntry.COLUMN_PRECIO, hamburguesa[2] as Double)
+                put(HamburguesaEntry.COLUMN_IMAGEN, hamburguesa[3] as Int)
             }
 
-            val newRowId = db.insert(HamburguesasEntry.TABLE_NAME, null, values)
+            val newRowId = db.insert(HamburguesaEntry.TABLE_NAME, null, values)
         }
     }
 
+    @SuppressLint("Range")
+    fun obtenerTodasLasHamburguesas(): List<Hamburguesas> {
+        val hamburguesas = mutableListOf<Hamburguesas>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM " + HamburguesaEntry.TABLE_NAME, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndex(HamburguesaEntry.COLUMN_ID))
+                val nombre = cursor.getString(cursor.getColumnIndex(HamburguesaEntry.COLUMN_NOMBRE))
+                val tipo = cursor.getString(cursor.getColumnIndex(HamburguesaEntry.COLUMN_TIPO))
+                val precio = cursor.getFloat(cursor.getColumnIndex(HamburguesaEntry.COLUMN_PRECIO))
+                val imagen = cursor.getInt(cursor.getColumnIndex(HamburguesaEntry.COLUMN_IMAGEN))
+                hamburguesas.add(Hamburguesas(id, nombre, tipo, precio, imagen))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return hamburguesas
+    }
+
+
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS Hamburguesas")
+        db.execSQL("DROP TABLE IF EXISTS " + HamburguesaEntry.TABLE_NAME)
         onCreate(db)
     }
+
+
 }

@@ -1,6 +1,6 @@
 package com.moraiiiss.appburguer.data
 
-object HamburguesasEntry {
+object HamburguesaEntry {
 
     const val TABLE_NAME = "Hamburguesas"
     const val COLUMN_ID = "id"

@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -197,13 +198,14 @@ fun ContenidoPaginaPrincipal(
 
 @Composable
 fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, principalViewModel: PrincipalViewModel) {
-    val hamburguesas by principalViewModel.hamburguesas.observeAsState(listOf())
+    val hamburguesasState = principalViewModel.hamburguesas.collectAsState(initial = emptyList())
+    val hamburguesas = hamburguesasState.value
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
         modifier = Modifier.padding(horizontal = 20.dp)
     ) {
-        items(hamburguesas) {hamburguesa ->
+        items(hamburguesas) { hamburguesa ->
             VistaHamburguesas(hamburguesa = hamburguesa, abreHamburguesas)
         }
     }

@@ -32,12 +32,12 @@ import com.moraiiiss.appburguer.app.Screen.PantallaPrincipal.PrincipalViewModel
 @Preview
 @Composable
 fun ViewDetallesHamburguesa() {
-    detallesHamburguesa(navegacionFuncion = { }, principalViewModel = null)
+    DetallesHamburguesa(navegacionFuncion = { }, principalViewModel = null)
 }
 
 
 @Composable
-fun detallesHamburguesa(navegacionFuncion: () -> Unit, principalViewModel: PrincipalViewModel?) {
+fun DetallesHamburguesa(navegacionFuncion: () -> Unit, principalViewModel: PrincipalViewModel?) {
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),

@@ -11,8 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.moraiiiss.appburguer.R
-import com.moraiiiss.appburguer.app.Screen.PantallaBurguerCalifornia
-import com.moraiiiss.appburguer.app.Screen.PantallaBurguerKingBuffalo
+import com.moraiiiss.appburguer.app.Screen.PantallaDetallesHamburguesa.DetallesHamburguesa
 import com.moraiiiss.appburguer.app.Screen.PantallaInformacion.PantallaInformation
 import com.moraiiiss.appburguer.app.Screen.PantallaPrincipal.PantallaPrincipal
 import com.moraiiiss.appburguer.app.Screen.PantallaPrincipal.PrincipalViewModel
@@ -53,11 +52,12 @@ class MainActivity : ComponentActivity() {
                 ) { backStackEntry ->
                     val id = backStackEntry.arguments?.getInt("id") ?: 99
                     Log.d("MainActivity", "id: $id")
-                    if (id % 2 == 0) {
-                        PantallaBurguerCalifornia(id)
-                    } else {
-                        PantallaBurguerKingBuffalo(id)
+                    when (id) {
+                        1 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, principalViewModel = principalViewModel)
+                        2 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, principalViewModel = principalViewModel)
+                        else -> Log.d("MainActivity", "Error al mostrar la pantalla de detalles")
                     }
+
                 }
             }
 
