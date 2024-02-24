@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,8 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val principalViewModel: PrincipalViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -38,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     PantallaPrincipal(
                         navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaInformacion.ruta) },
                         abreHamburguesas = { id -> controlNavegacion.navigate("${RutasNavegacion.PantallaDetallesHambuguesa.ruta}/$id") },
-                        principalViewModel = principalViewModel
+                        viewModel = hiltViewModel()
                     )
                 }
                 composable(RutasNavegacion.PantallaInformacion.ruta) {
@@ -53,9 +52,13 @@ class MainActivity : ComponentActivity() {
                     val id = backStackEntry.arguments?.getInt("id") ?: 99
                     Log.d("MainActivity", "id: $id")
                     when (id) {
-                        1 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, principalViewModel = principalViewModel)
-                        2 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, principalViewModel = principalViewModel)
-                        else -> Log.d("MainActivity", "Error al mostrar la pantalla de detalles")
+                        1 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, viewModelDetallesHamburguesas = hiltViewModel())
+                        2 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, viewModelDetallesHamburguesas = hiltViewModel())
+                        3 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, viewModelDetallesHamburguesas = hiltViewModel())
+                        4 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, viewModelDetallesHamburguesas = hiltViewModel())
+                        5 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, viewModelDetallesHamburguesas = hiltViewModel())
+                        6 -> DetallesHamburguesa(navegacionFuncion = { controlNavegacion.navigate(RutasNavegacion.PantallaPrincipal.ruta) }, viewModelDetallesHamburguesas = hiltViewModel())
+                        else -> Log.d("MainActivity", "No hay mas hamburguesas para mostrar")
                     }
 
                 }

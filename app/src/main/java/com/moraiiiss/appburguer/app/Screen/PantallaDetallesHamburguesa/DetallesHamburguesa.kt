@@ -26,18 +26,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.moraiiiss.appburguer.app.Screen.PantallaPrincipal.NavigationBar
 import com.moraiiiss.appburguer.app.Screen.PantallaPrincipal.PrincipalViewModel
 
 @Preview
 @Composable
 fun ViewDetallesHamburguesa() {
-    DetallesHamburguesa(navegacionFuncion = { }, principalViewModel = null)
+    DetallesHamburguesa(navegacionFuncion = { }, viewModelDetallesHamburguesas = hiltViewModel())
 }
 
 
 @Composable
-fun DetallesHamburguesa(navegacionFuncion: () -> Unit, principalViewModel: PrincipalViewModel?) {
+fun DetallesHamburguesa(navegacionFuncion: () -> Unit, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
@@ -45,8 +46,8 @@ fun DetallesHamburguesa(navegacionFuncion: () -> Unit, principalViewModel: Princ
         bottomBar = { NavigationBar() },
 
         ) { innerPadding ->
-        if (principalViewModel != null) {
-            ConteidoPaginaDetalles(modifier = Modifier.padding(innerPadding), principalViewModel = principalViewModel)
+        if (viewModelDetallesHamburguesas != null) {
+            ConteidoPaginaDetalles(modifier = Modifier.padding(innerPadding), viewModelDetallesHamburguesas = hiltViewModel())
         }
     }
 }
@@ -118,6 +119,7 @@ fun TopBarPantallaDetalles(navegacionFuncion: () -> Unit) {
 
 
 @Composable
-fun ConteidoPaginaDetalles(modifier: Modifier, principalViewModel: PrincipalViewModel) {
+fun ConteidoPaginaDetalles(modifier: Modifier, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
+    Text(text = "Detalles de la hamburguesa", modifier = modifier)
 
 }

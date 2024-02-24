@@ -80,6 +80,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation ("androidx.compose.runtime:runtime-livedata:1.1.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 
 }
 

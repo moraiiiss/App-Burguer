@@ -51,36 +51,30 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.moraiiiss.appburguer.app.Screen.PantallaDetallesHamburguesa.ViewModelDetallesHamburguesas
 import com.moraiiiss.appburguer.data.Hamburguesas
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> Unit, principalViewModel: PrincipalViewModel?) {
-
-
+fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> Unit, viewModel: PrincipalViewModel = hiltViewModel()) {
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
         topBar = { TopBarPantallaPrincipal(navegacionFuncion) },
-        bottomBar = { NavigationBar() },
-
-        ) { innerPadding ->
-        if (principalViewModel != null) {
-            ContenidoPaginaPrincipal(modifier = Modifier.padding(innerPadding), abreHamburguesas = abreHamburguesas,principalViewModel = principalViewModel)
+        bottomBar = { NavigationBar() }
+    ) { innerPadding ->
+        if (viewModel != null) {
+            ContenidoPaginaPrincipal(
+                modifier = Modifier.padding(innerPadding),
+                abreHamburguesas = abreHamburguesas,
+                principalViewModel = viewModel
+            )
         }
     }
-
-
 }
 
-@Preview
-@Composable
-fun ViewPantallaPrincipal() {
-
-    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { }, principalViewModel = null)
-
-}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -191,14 +185,15 @@ fun ContenidoPaginaPrincipal(
                 .padding(horizontal = 10.dp)
         )
 
-        ListasHamburguesas(abreHamburguesas = abreHamburguesas, principalViewModel = principalViewModel)
+        ListasHamburguesas(abreHamburguesas = abreHamburguesas, viewModelDetallesHamburguesas = hiltViewModel())
     }
 }
 
 
 @Composable
-fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, principalViewModel: PrincipalViewModel) {
-    val hamburguesasState = principalViewModel.hamburguesas.collectAsState(initial = emptyList())
+fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
+    //val hamburguesasState = principalViewModel.hamburguesas.collectAsState(initial = emptyList())
+    val hamburguesasState = viewModelDetallesHamburguesas.hamburguesas.collectAsState(emptyList())
     val hamburguesas = hamburguesasState.value
 
     LazyVerticalGrid(
@@ -217,7 +212,7 @@ fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, principalViewModel: Prin
 fun VistaHamburguesas(hamburguesa: Hamburguesas, abreHamburguesas: (Int) -> Unit) {
     Card(modifier = Modifier
         .width(200.dp)
-        .clickable {  abreHamburguesas(hamburguesa.idNavegacion)  }
+        .clickable { abreHamburguesas(hamburguesa.idNavegacion) }
         .padding(10.dp)
         .border(2.dp, color = Color(0xFFE6AB30), shape = ShapeDefaults.Large)) {
         Column(modifier = Modifier.padding(9.dp)) {
@@ -259,4 +254,12 @@ fun VistaHamburguesas(hamburguesa: Hamburguesas, abreHamburguesas: (Int) -> Unit
 @Composable
 fun TextoPredeterminado(texto: String, modifier: Modifier = Modifier) {
     Text(text = texto, modifier = modifier, color = Color.Black)
+}
+
+@Preview
+@Composable
+fun ViewPantallaPrincipal() {
+
+    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { }, viewModel = hiltViewModel())
+
 }
