@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app.Screen.PantallaInformacion
+package com.moraiiiss.appburguer.Screen.PantallaInformacion
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
@@ -48,14 +48,7 @@ fun PantallaInformation(navegacionFuncion: () -> Unit) {
         ContenidoPaginaInformacion( modifier = Modifier.padding(innerPadding))
     }
 }
-@Preview
-@Composable
 
-fun ViewPantallaInformation() {
-    PantallaInformation {
-
-    }
-}
 
 
 
@@ -141,5 +134,14 @@ fun ContenidoPaginaInformacion(modifier: Modifier = Modifier) {
         }
     }
 
+}
+
+@Preview
+@Composable
+
+fun ViewPantallaInformation() {
+    PantallaInformation {
+
+    }
 }
 

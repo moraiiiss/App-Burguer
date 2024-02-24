@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app.Screen.PantallaPrincipal
+package com.moraiiiss.appburguer.Screen.PantallaPrincipal
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

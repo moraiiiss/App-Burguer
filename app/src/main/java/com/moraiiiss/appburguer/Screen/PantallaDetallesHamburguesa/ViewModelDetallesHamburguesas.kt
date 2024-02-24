@@ -1,7 +1,8 @@
-package com.moraiiiss.appburguer.app.Screen.PantallaDetallesHamburguesa
+package com.moraiiiss.appburguer.Screen.PantallaDetallesHamburguesa
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.moraiiiss.appburguer.data.BaseDatos
 import com.moraiiiss.appburguer.data.HamburguesaEntry
@@ -13,11 +14,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ViewModelDetallesHamburguesas @Inject constructor(application: Application) : AndroidViewModel(application) {
+class ViewModelDetallesHamburguesas @Inject constructor( application: Application) : AndroidViewModel(application) {
+
+
     private val dbHelper = BaseDatos(application)
 
     private val _hamburguesas = MutableStateFlow<List<Hamburguesas>>(emptyList())
     val hamburguesas: StateFlow<List<Hamburguesas>> = _hamburguesas
+
+
 
     init {
         _hamburguesas.value = getHamburguersas()//le damos el valor de la lista de hamburguesas

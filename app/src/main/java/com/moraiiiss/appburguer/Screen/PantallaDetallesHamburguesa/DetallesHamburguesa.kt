@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app.Screen.PantallaDetallesHamburguesa
+package com.moraiiiss.appburguer.Screen.PantallaDetallesHamburguesa
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.height
@@ -27,18 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.moraiiiss.appburguer.app.Screen.PantallaPrincipal.NavigationBar
-import com.moraiiiss.appburguer.app.Screen.PantallaPrincipal.PrincipalViewModel
-
-@Preview
-@Composable
-fun ViewDetallesHamburguesa() {
-    DetallesHamburguesa(navegacionFuncion = { }, viewModelDetallesHamburguesas = hiltViewModel())
-}
-
+import com.moraiiiss.appburguer.Screen.PantallaPrincipal.NavigationBar
+import com.moraiiiss.appburguer.Screen.PantallaPrincipal.PrincipalViewModel
 
 @Composable
-fun DetallesHamburguesa(navegacionFuncion: () -> Unit, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
+fun DetallesHamburguesaScreen(navegacionFuncion: () -> Unit, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
@@ -46,9 +39,10 @@ fun DetallesHamburguesa(navegacionFuncion: () -> Unit, viewModelDetallesHamburgu
         bottomBar = { NavigationBar() },
 
         ) { innerPadding ->
-        if (viewModelDetallesHamburguesas != null) {
-            ConteidoPaginaDetalles(modifier = Modifier.padding(innerPadding), viewModelDetallesHamburguesas = hiltViewModel())
-        }
+        DetallesHamburguesaContent(
+            modifier = Modifier.padding(innerPadding),
+            viewModelDetallesHamburguesas = hiltViewModel()
+        )
     }
 }
 
@@ -119,7 +113,13 @@ fun TopBarPantallaDetalles(navegacionFuncion: () -> Unit) {
 
 
 @Composable
-fun ConteidoPaginaDetalles(modifier: Modifier, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
+fun DetallesHamburguesaContent(modifier: Modifier, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
     Text(text = "Detalles de la hamburguesa", modifier = modifier)
 
+}
+
+@Preview
+@Composable
+fun ViewDetallesHamburguesa() {
+    DetallesHamburguesaScreen(navegacionFuncion = {})
 }

@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app.Screen.PantallaPrincipal
+package com.moraiiiss.appburguer.Screen.PantallaPrincipal
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -52,33 +52,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.moraiiiss.appburguer.app.Screen.PantallaDetallesHamburguesa.ViewModelDetallesHamburguesas
+import com.moraiiiss.appburguer.Screen.PantallaDetallesHamburguesa.ViewModelDetallesHamburguesas
 import com.moraiiiss.appburguer.data.Hamburguesas
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PantallaPrincipal(abreHamburguesas: (Int) -> Unit, navegacionFuncion: () -> Unit, viewModel: PrincipalViewModel = hiltViewModel()) {
+fun PantallaPrincipalScreen(abreHamburguesas: (Int) -> Unit,navegacionFuncionPedido: () -> Unit, navegacionFuncion: () -> Unit, viewModel: PrincipalViewModel = hiltViewModel()) {
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
-        topBar = { TopBarPantallaPrincipal(navegacionFuncion) },
+        topBar = { TopBarPantallaPrincipal(navegacionFuncion,navegacionFuncionPedido) },
         bottomBar = { NavigationBar() }
     ) { innerPadding ->
-        if (viewModel != null) {
-            ContenidoPaginaPrincipal(
-                modifier = Modifier.padding(innerPadding),
-                abreHamburguesas = abreHamburguesas,
-                principalViewModel = viewModel
-            )
-        }
+        PaginaPrincipalContent(
+            modifier = Modifier.padding(innerPadding),
+            abreHamburguesas = abreHamburguesas,
+            principalViewModel = viewModel
+        )
     }
 }
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun TopBarPantallaPrincipal(navegacionFuncion: () -> Unit) {
+fun TopBarPantallaPrincipal(navegacionFuncion: () -> Unit, navegacionFuncionPedido: () -> Unit) {
     TopAppBar(modifier = Modifier
         .background(color = Color(0xFF8D6E63))
         .padding(5.dp),
@@ -119,7 +117,7 @@ fun TopBarPantallaPrincipal(navegacionFuncion: () -> Unit) {
                         .width(50.dp)
                 )
             }
-            IconButton(onClick = { /*TODO*/ }) { //boton para acceso de la cuenta del cliente
+            IconButton(onClick = { navegacionFuncionPedido() }) { //boton para acceso de la cuenta del cliente
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
                     contentDescription = "Pedido cliente",
@@ -148,7 +146,7 @@ fun NavigationBar() {
 
 
 @Composable
-fun ContenidoPaginaPrincipal(
+fun PaginaPrincipalContent(
     modifier: Modifier = Modifier,
     abreHamburguesas: (Int) -> Unit,
     principalViewModel: PrincipalViewModel
@@ -260,6 +258,6 @@ fun TextoPredeterminado(texto: String, modifier: Modifier = Modifier) {
 @Composable
 fun ViewPantallaPrincipal() {
 
-    PantallaPrincipal(abreHamburguesas = {}, navegacionFuncion = { }, viewModel = hiltViewModel())
+    PantallaPrincipalScreen(abreHamburguesas = {}, navegacionFuncion = { }, viewModel = hiltViewModel(), navegacionFuncionPedido = {})
 
 }
