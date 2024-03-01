@@ -13,22 +13,24 @@ import javax.inject.Inject
 @HiltViewModel
 class ViewModelDetallesHamburguesas @Inject constructor(
     private val hamburguesasRepository: HamburguesasRepository,
-    private val savedStateHandle: SavedStateHandle
+    //private val savedStateHandle: SavedStateHandle
 
 ) : ViewModel() {
 
-    private val id: String = checkNotNull(savedStateHandle["id"])
+   // private val id: String = checkNotNull(savedStateHandle["id"])
 
 
 
 
     //mostrar hamburguesas
-    private val _hamburguesas = MutableStateFlow<List<Hamburguesas>>(emptyList())
-    val hamburguesas: StateFlow<List<Hamburguesas>> = _hamburguesas
+    private var _state: List<Hamburguesas> = emptyList()
+
+    val state
+        get() = _state
 
     init {
         viewModelScope.launch {
-            _hamburguesas.value = hamburguesasRepository.obtenerTodasHamburguesas()
+            _state = hamburguesasRepository.obtenerTodasHamburguesas()
         }
     }
 

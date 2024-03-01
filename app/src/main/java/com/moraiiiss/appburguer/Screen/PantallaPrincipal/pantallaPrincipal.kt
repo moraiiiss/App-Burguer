@@ -190,15 +190,16 @@ fun PaginaPrincipalContent(
 
 @Composable
 fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
-    //val hamburguesasState = principalViewModel.hamburguesas.collectAsState(initial = emptyList())
-    val hamburguesasState = viewModelDetallesHamburguesas.hamburguesas.collectAsState(emptyList())
-    val hamburguesas = hamburguesasState.value
+
+    //val hamburguesasState = viewModelDetallesHamburguesas.hamburguesas.collectAsState(emptyList())
+    //val hamburguesas = hamburguesasState.value
+    val state = viewModelDetallesHamburguesas.state
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
         modifier = Modifier.padding(horizontal = 20.dp)
     ) {
-        items(hamburguesas) { hamburguesa ->
+        items(state) { hamburguesa ->
             VistaHamburguesas(hamburguesa = hamburguesa, abreHamburguesas)
         }
     }
