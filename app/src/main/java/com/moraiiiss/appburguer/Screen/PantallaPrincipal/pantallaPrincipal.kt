@@ -258,6 +258,6 @@ fun TextoPredeterminado(texto: String, modifier: Modifier = Modifier) {
 @Composable
 fun ViewPantallaPrincipal() {
 
-    PantallaPrincipalScreen(abreHamburguesas = {}, navegacionFuncion = { }, viewModel = hiltViewModel(), navegacionFuncionPedido = {})
+    PantallaPrincipalScreen(abreHamburguesas = {}, navegacionFuncion = { }, navegacionFuncionPedido = {})
 
 }

@@ -14,6 +14,9 @@ class ViewModelDetallesHamburguesas @Inject constructor(
     private val hamburguesasRepository: HamburguesasRepository
 ) : ViewModel() {
 
+
+
+
     //mostrar hamburguesas
     private val _hamburguesas = MutableStateFlow<List<Hamburguesas>>(emptyList())
     val hamburguesas: StateFlow<List<Hamburguesas>> = _hamburguesas

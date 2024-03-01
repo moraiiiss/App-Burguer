@@ -21,7 +21,7 @@ class HamburguesasRepository @Inject constructor(
             3, "Hamburguesa Buffalo", "Carne", 9.5f, R.drawable.kingbuffalo
         ),
         Hamburguesas(
-            4, "Hamburguesa Vegana", "Vegana", 12.5f, R.drawable.vegana
+            4, "Hamburguesa Vegaa", "Vegana", 12.5f, R.drawable.vegana
         ),
         Hamburguesas(
             5, "Hamburguesa TheUltimate", "Ternera", 10.5f, R.drawable.theultimate
