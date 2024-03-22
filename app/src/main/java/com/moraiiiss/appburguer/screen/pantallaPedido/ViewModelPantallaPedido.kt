@@ -1,8 +1,7 @@
-package com.moraiiiss.appburguer.Screen.PantallaPedido
+package com.moraiiiss.appburguer.screen.pantallaPedido
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.moraiiiss.appburguer.data.Hamburguesas
 import com.moraiiiss.appburguer.data.Pedido
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

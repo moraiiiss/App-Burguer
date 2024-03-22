@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.Screen.PantallaDetallesHamburguesa
+package com.moraiiiss.appburguer.screen.pantallaDetallesHamburguesa
 
 import android.annotation.SuppressLint
 import android.database.sqlite.SQLiteDatabase
@@ -36,6 +36,8 @@ class HamburguesasRepository @Inject constructor(
     fun obtenerHamburguesa(id: Int): Hamburguesas {
         return hamburguesas[id - 1]
     }
+
+    fun obtenerHamburguesasLocal() = hamburguesas
 
     //Funcion para obtener todas las hamburguesas
     @SuppressLint("Range")

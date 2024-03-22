@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.Screen.PantallaPrincipal
+package com.moraiiiss.appburguer.screen.pantallaPrincipal
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -32,7 +32,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,13 +51,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.moraiiiss.appburguer.Screen.PantallaDetallesHamburguesa.ViewModelDetallesHamburguesas
+import com.moraiiiss.appburguer.screen.pantallaDetallesHamburguesa.ViewModelDetallesHamburguesas
 import com.moraiiiss.appburguer.data.Hamburguesas
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PantallaPrincipalScreen(abreHamburguesas: (Int) -> Unit,navegacionFuncionPedido: () -> Unit, navegacionFuncion: () -> Unit, viewModel: PrincipalViewModel = hiltViewModel()) {
+    val state by viewModel.state.collectAsState()
+
     Scaffold(
         containerColor = Color(0xFFF5E1DA),
         contentColor = Color(0xFFE6AB30),
@@ -68,8 +69,51 @@ fun PantallaPrincipalScreen(abreHamburguesas: (Int) -> Unit,navegacionFuncionPed
         PaginaPrincipalContent(
             modifier = Modifier.padding(innerPadding),
             abreHamburguesas = abreHamburguesas,
-            principalViewModel = viewModel
+            list = state
         )
+    }
+}
+
+@Composable
+fun PaginaPrincipalContent(
+    modifier: Modifier = Modifier,
+    abreHamburguesas: (Int) -> Unit,
+    list: List<Hamburguesas>
+
+    ) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+
+    ) {
+
+        // Card
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = ShapeDefaults.ExtraLarge,
+            border = BorderStroke(1.dp, Color(0xFFE6AB30))
+
+
+        ) {
+            Text(
+                text = "Bienvenido a App Burger",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                fontSize = 25.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color(0xFF8D6E63)
+            )
+        }
+
+        TextoPredeterminado(
+            "Pincha dentro de la Hamburguesa ", modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
+        )
+
+        ListasHamburguesas(abreHamburguesas = abreHamburguesas, list = list)
     }
 }
 
@@ -143,69 +187,18 @@ fun NavigationBar() {
     }
 }
 
-
-
 @Composable
-fun PaginaPrincipalContent(
-    modifier: Modifier = Modifier,
-    abreHamburguesas: (Int) -> Unit,
-    principalViewModel: PrincipalViewModel
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-
-    ) {
-
-        // Card
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            shape = ShapeDefaults.ExtraLarge,
-            border = BorderStroke(1.dp, Color(0xFFE6AB30))
-
-
-        ) {
-            Text(
-                text = "Bienvenido a App Burger",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                fontSize = 25.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF8D6E63)
-            )
-        }
-
-        TextoPredeterminado(
-            "Pincha dentro de la Hamburguesa ", modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-        )
-
-        ListasHamburguesas(abreHamburguesas = abreHamburguesas, viewModelDetallesHamburguesas = hiltViewModel())
-    }
-}
-
-
-@Composable
-fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit, viewModelDetallesHamburguesas: ViewModelDetallesHamburguesas = hiltViewModel()) {
-
-    //val hamburguesasState = viewModelDetallesHamburguesas.hamburguesas.collectAsState(emptyList())
-    //val hamburguesas = hamburguesasState.value
-    val state = viewModelDetallesHamburguesas.state
+fun ListasHamburguesas(abreHamburguesas: (Int) -> Unit,list: List<Hamburguesas>) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
         modifier = Modifier.padding(horizontal = 20.dp)
     ) {
-        items(state) { hamburguesa ->
+        items(list) { hamburguesa ->
             VistaHamburguesas(hamburguesa = hamburguesa, abreHamburguesas)
         }
     }
 }
-
-
 
 @Composable
 fun VistaHamburguesas(hamburguesa: Hamburguesas, abreHamburguesas: (Int) -> Unit) {
@@ -247,8 +240,6 @@ fun VistaHamburguesas(hamburguesa: Hamburguesas, abreHamburguesas: (Int) -> Unit
 
     }
 }
-
-
 
 @Composable
 fun TextoPredeterminado(texto: String, modifier: Modifier = Modifier) {

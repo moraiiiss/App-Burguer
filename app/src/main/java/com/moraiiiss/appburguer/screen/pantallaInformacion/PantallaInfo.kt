@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.Screen.PantallaInformacion
+package com.moraiiiss.appburguer.screen.pantallaInformacion
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column

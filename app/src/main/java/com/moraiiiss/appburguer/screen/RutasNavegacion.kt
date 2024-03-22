@@ -1,4 +1,4 @@
-package com.moraiiiss.appburguer.app
+package com.moraiiiss.appburguer.screen
 
 sealed class RutasNavegacion(val ruta: String) {
 
